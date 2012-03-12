@@ -1,0 +1,118 @@
+body {
+    background-color:#EEE;
+    color:#005;
+    font-size:1em;
+font-family: Tahoma, Geneva, sans-serif;
+}
+
+
+#main{
+    width:760px;
+    margin-top:20px;
+    margin-left:20px;
+    margin-right:auto;
+    text-align: left;
+}
+
+#top-shadow {
+    position: fixed; top: 0px; left: 0px;
+    width:5000px;
+    height:1px;
+    background-color:black;
+    box-shadow: 0 0 5px 5px #000;
+    opacity:0.5;
+}
+
+ul.resultsTree li, li ul {
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding-right: 16px;
+}
+
+.results {
+    border: 5px rgba(0,0,0,0.2) solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    padding: 5px;
+    color:#FFF;
+}
+
+.tree-title {
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+.results-failed {
+    background-color:#FA8072;
+}
+
+li.status-failed, li.status-passed{
+    background-color:rgba(255,255,255,0.8);
+    color:rgba(0,0,100,0.9);
+}
+
+.results-passed {
+    margin-top:10pt;
+    background-color:#9ccf34;
+}
+
+.info {
+    font-weight:bold;
+    position: fixed; top: 20px; left: 800px; width: 400px;
+    padding:10px;
+    background-color:#4682B4;
+    color:#fff;
+    border: 5px rgba(0,0,0,0.2) solid;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+}
+
+.info h1 {
+    text-align:center;
+    font-size:1.8em;
+    font-weight:bold;
+    margin-bottom:10pt;
+}
+
+#totals {
+    margin:10pt;
+}
+
+#totals div{
+    margin-bottom:5pt;
+}
+
+.stats {
+    text-align:center;
+    margin-top:5px;
+    border: 2px rgba(0,0,0,0.2) solid;
+    color:#FFF;
+    font-size:1.2em;
+    padding:5pt;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.stats table {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.stats td {
+    text-align:left;
+    font-size:0.8em;
+    padding-top:5pt;
+    padding-right:20pt;
+}
+
+.passedTotals {
+    background-color:#9ccf34;
+}
+.failedTotals {
+    background-color:#FA8072;
+}
+
