@@ -65,7 +65,9 @@ public enum TripletIdentifiers {
     color_management_resource_descriptor(0x91),
     rendering_intent(0x95),
     cmr_tag_fidelity(0x96),
-    device_appearance(0x97);
+    device_appearance(0x97),
+    image_resolution(0x9A),
+    object_container_presentation_space_size(0x9C);
 
     private static final int MAX_LENGTH = 254;
 
