@@ -3,8 +3,6 @@
  */
 package org.modica.afp.modca.structuredfields.attribute;
 
-import static org.junit.Assert.*;
-
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -13,12 +11,14 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.modica.afp.modca.ParameterAsString;
+import org.modica.afp.modca.Parameters;
 import org.modica.afp.modca.structuredfields.SfTypeFactory.Attribute;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducerTestCase;
 import org.modica.afp.modca.structuredfields.StructuredFieldWithTripletsTestCase;
-import org.modica.afp.modca.triplets.AttributeValueTestCase;
+import org.modica.afp.modca.triplets.AttributeValue;
 import org.modica.afp.modca.triplets.Triplet;
+import org.modica.common.ByteUtils;
 
 /**
  * @author Tim Grafford (tim @ kgm.se)
@@ -30,8 +30,6 @@ public class TagLogicalElementTestCase extends StructuredFieldWithTripletsTestCa
     
     private StructuredFieldIntroducer intro;
     private TagLogicalElement sut;
-    private String expectedNameString = "NAME STRING";
-    private String expectedValueString = "VALUE STRING";
     
     @Before
     public void setUp() throws MalformedURLException, UnsupportedEncodingException {
@@ -40,24 +38,19 @@ public class TagLogicalElementTestCase extends StructuredFieldWithTripletsTestCa
         List<Triplet> triplets = addTripletToList(
                 ATTRIBUTE_GID_REF
                 );
-        triplets.add(AttributeValueTestCase.createAttributeValue(expectedValueString));
+        Parameters params = new Parameters(ByteUtils.hexToBytes(ATTRIBUTE_VALUE));
+        int length = (int) params.getUInt(1);
+        params.skip(1);
+        triplets.add(new AttributeValue(params, length));
         
         sut = new TagLogicalElement(intro, triplets);
         setMembers(sut, intro, triplets);
-    }
-    
-    @Test
-    public void testGetters() {
-        assertEquals(expectedNameString, sut.getName());
-        assertEquals(expectedValueString, sut.getValue());
     }
 
     @Test
     @Override
     public void testGetParameters() {
         List<ParameterAsString> expectedParams = new ArrayList<ParameterAsString>();
-        expectedParams.add(new ParameterAsString("Name", expectedNameString));
-        expectedParams.add(new ParameterAsString("Value", expectedValueString));
         testParameters(expectedParams, sut);
     }
 
