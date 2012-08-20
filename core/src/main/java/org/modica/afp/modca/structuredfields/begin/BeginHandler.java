@@ -34,7 +34,7 @@ public final class BeginHandler {
                 sf = new BeginCodePage(intro, triplets, params, context);
                 break;
             case document:
-                triplets = TripletHandler.parseTriplet(params, 8, context);
+                triplets = TripletHandler.parseTriplet(params, 10, context);
                 sf = new BeginDocument(intro, triplets, params);
                 break;
             case font:

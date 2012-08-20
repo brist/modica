@@ -37,6 +37,9 @@ public final class TripletHandler {
             int tripletLength = (int) params.getUInt(1);
             TripletIdentifiers tId = TripletIdentifiers.getTripletId(params.getByte());
             switch (tId) {
+            case attribute_value:
+                tripletList.add(new AttributeValue(params, tripletLength));
+                break;
             case coded_graphic_character_set_global_identifier:
                 tripletList.add(Cgcsgid.parse(params, context));
                 break;

@@ -12,6 +12,7 @@ public enum TripletIdentifiers {
     mapping_option(0x04),
     object_classification(0x10),
     modca_interchange_set(0x18),
+    text_orientation(0x1d),
     font_descriptor_specification(0x1f),
     coded_graphic_character_set_global_identifier1(0x20),
     object_function_set_specification(0x21),

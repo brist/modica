@@ -7,6 +7,7 @@ import java.nio.channels.FileChannel;
 import org.modica.afp.modca.Context.ContextType;
 import org.modica.afp.modca.structuredfields.StructuredField;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
+import org.modica.afp.modca.structuredfields.attribute.AttributeHandler;
 import org.modica.afp.modca.structuredfields.begin.BeginHandler;
 import org.modica.afp.modca.structuredfields.control.ControlHandler;
 import org.modica.afp.modca.structuredfields.data.DataHandler;
@@ -41,6 +42,12 @@ public class StructuredFieldFactoryImpl implements StructuredFieldFactory {
         } catch (IOException ioe) {
             throw new IllegalStateException(ioe);
         }
+    }
+
+    @Override
+    public StructuredField createAttribute(StructuredFieldIntroducer introducer) {
+        Parameters payload = createStructuredField(introducer);
+        return AttributeHandler.handle(introducer, payload, context);
     }
 
     @Override

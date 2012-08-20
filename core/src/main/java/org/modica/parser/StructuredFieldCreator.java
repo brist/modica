@@ -62,6 +62,9 @@ public class StructuredFieldCreator implements StructuredFieldIntroducerHandler 
     public void handle(StructuredFieldIntroducer introducer) {
         StructuredField structuredField;
         switch (introducer.getType().getTypeCode()) {
+        case Attribute:
+            structuredField = sfFactory.createAttribute(introducer);
+            break;
         case Map:
             structuredField = sfFactory.createMap(introducer);
             break;
