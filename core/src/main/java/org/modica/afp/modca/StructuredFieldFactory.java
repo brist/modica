@@ -42,14 +42,6 @@ import org.modica.afp.modca.structuredfields.types.VariableType;
  * {@link StructuredFieldIntroducer} with the data pay-load.
  */
 public interface StructuredFieldFactory {
-    
-    /**
-     * Creates a structured field of the {@link Attribute} type.
-     * 
-     * @param introducer the introducer for the structured field
-     * @return a Attribute type structured field
-     */
-    StructuredField createAttribute(StructuredFieldIntroducer introducer);
 
     /**
      * Creates a structured field of the {@link BeginType} type.

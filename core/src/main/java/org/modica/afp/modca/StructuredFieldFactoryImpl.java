@@ -66,12 +66,6 @@ public class StructuredFieldFactoryImpl implements StructuredFieldFactory {
     }
 
     @Override
-    public StructuredField createAttribute(StructuredFieldIntroducer introducer) {
-        Parameters payload = createStructuredField(introducer);
-        return AttributeHandler.handle(introducer, payload, context);
-    }
-
-    @Override
     public StructuredField createBegin(StructuredFieldIntroducer introducer) {
         return createStructuredField(introducer);
     }
