@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.structuredfields.map;
 
 import java.io.UnsupportedEncodingException;
@@ -10,12 +27,14 @@ import java.util.Map;
 import org.modica.afp.modca.Context;
 import org.modica.afp.modca.Context.ContextType;
 import org.modica.afp.modca.ParameterAsString;
+import org.modica.afp.modca.Parameters;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
 import org.modica.afp.modca.structuredfields.StructuredFieldWithTripletGroup;
 import org.modica.afp.modca.triplets.RepeatingTripletGroup;
 import org.modica.afp.modca.triplets.ResourceLocalId;
 import org.modica.afp.modca.triplets.ResourceLocalId.ResourceType;
 import org.modica.afp.modca.triplets.Triplet;
+import org.modica.afp.modca.triplets.TripletHandler;
 import org.modica.afp.modca.triplets.fullyqualifiedname.FQNCharStringData;
 import org.modica.afp.modca.triplets.fullyqualifiedname.FQNType;
 import org.modica.afp.modca.triplets.fullyqualifiedname.FullyQualifiedName;
@@ -34,7 +53,7 @@ public class MapCodedFont extends StructuredFieldWithTripletGroup {
 
     private final Map<Byte, CharacterSetCodePage> fontMappings = new HashMap<Byte, CharacterSetCodePage>();
 
-    public MapCodedFont(StructuredFieldIntroducer introducer, RepeatingTripletGroup tripletGroup,
+    MapCodedFont(StructuredFieldIntroducer introducer, RepeatingTripletGroup tripletGroup,
             Context ctx) throws UnsupportedEncodingException, MalformedURLException {
         super(introducer, tripletGroup);
         handleFontMappings();
@@ -67,6 +86,7 @@ public class MapCodedFont extends StructuredFieldWithTripletGroup {
                     if (rid.getResourceType() == ResourceType.CODED_FONT) {
                         resourceId = rid.getResourceLocalId();
                     }
+                default:
                 }
             }
             if (resourceId != 0 && characterSet != null && codePage != null) {
@@ -99,6 +119,14 @@ public class MapCodedFont extends StructuredFieldWithTripletGroup {
         @Override
         public String toString() {
             return "CharacterSet=" + characterSet + " CodePage=" + codePage;
+        }
+    }
+
+    public static final class MCFBuilder implements Builder {
+        @Override
+        public MapCodedFont build(StructuredFieldIntroducer intro, Parameters params,
+                Context context) throws UnsupportedEncodingException, MalformedURLException {
+            return new MapCodedFont(intro, TripletHandler.parseRepeatingGroup(params, context), context);
         }
     }
 }

@@ -19,7 +19,7 @@
 
 package org.modica.web;
 
-import java.io.File;
+import org.modica.web.model.IAfpState;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -29,7 +29,7 @@ public class ModicaSession extends WebSession {
 
     private static final long serialVersionUID = 1L;
 
-    private transient File afpFile;
+    private transient IAfpState afpState;
 
     public static ModicaSession get() {
         return (ModicaSession) Session.get();
@@ -39,12 +39,12 @@ public class ModicaSession extends WebSession {
         super(request);
     }
 
-    public File getAfpFile() {
-        return afpFile;
+    public IAfpState getAfpSessionState() {
+        return afpState;
     }
 
-    public void setAfpFile(File afpFile) {
-        this.afpFile = afpFile;
+    public void setAfpSessionState(IAfpState afpState) {
+        this.afpState = afpState;
     }
 
 }

@@ -1,8 +1,27 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.structuredfields;
 
 import java.io.Serializable;
 
 import org.modica.common.StringUtils;
+import org.modica.parser.StructuredFieldHandler;
+import org.modica.parser.StructuredFieldIntroducerHandler;
 
 /**
  * A data object that represents a structured field and holds the data provided in the introducer.
@@ -27,7 +46,7 @@ public class StructuredFieldIntroducer implements Serializable {
 
     private final long offset;
     private final int length;
-    private final SfType type;
+    private final StructuredFieldType type;
     private final byte flags;
     private final int extLength;
 
@@ -43,7 +62,7 @@ public class StructuredFieldIntroducer implements Serializable {
     public StructuredFieldIntroducer(long offset, int length, byte[] type, byte flags, int extLength) {
         this.offset = offset;
         this.length = length;
-        this.type = SfTypeFactory.getValue(type);
+        this.type = StructuredFieldTypeFactory.getValue(type);
         this.flags = flags;
         this.extLength = extLength;
     }
@@ -90,7 +109,7 @@ public class StructuredFieldIntroducer implements Serializable {
      *
      * @return the structured field type
      */
-    public SfType getType() {
+    public StructuredFieldType getType() {
         return type;
     }
 
@@ -146,6 +165,17 @@ public class StructuredFieldIntroducer implements Serializable {
      */
     public static boolean hasSfiExtension(byte flags) {
         return FlagField.hasSfiExtension(flags);
+    }
+
+    /**
+     * Given a {@link StructuredFieldHandler} this helper method will use its
+     * {@link StructuredFieldType} and call the relevant method on the handler.
+     * @See {@link StructuredFieldType#handleIntroducer(StructuredFieldIntroducerHandler, StructuredFieldIntroducer)}
+     *
+     * @param handler the introducer handler
+     */
+    public void handleIntroducer(StructuredFieldIntroducerHandler handler) {
+        getType().handleIntroducer(handler, this);
     }
 
     @Override

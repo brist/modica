@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.structuredfields.control;
 
 import java.io.UnsupportedEncodingException;
@@ -8,10 +25,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.modica.afp.modca.Context;
+import org.modica.afp.modca.ContextImpl;
 import org.modica.afp.modca.ParameterAsString;
 import org.modica.afp.modca.Parameters;
 import org.modica.afp.modca.common.CPIRepeatingGroupLength;
-import org.modica.afp.modca.structuredfields.SfTypeFactory.Control;
+import org.modica.afp.modca.structuredfields.ControlType;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducerTestCase;
 import org.modica.afp.modca.structuredfields.StructuredFieldTestCase;
@@ -47,40 +65,40 @@ public class CodePageControlTestCase extends StructuredFieldTestCase<CodePageCon
 
     @Before
     public void setUp() throws UnsupportedEncodingException {
-        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(Control.CPC);
+        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(ControlType.CPC);
 
         ByteBuffer bb = ByteBuffer.allocate(15);
 
         bb.put(defaultChar.getBytes("Cp500"));
         bb.put(ByteUtils.createByteArray(0x80, 0x0A, 2, 3, 0x90));
         byte[] data = bb.array();
-        sutCtx = new Context();
+        sutCtx = new ContextImpl();
         sut = new CodePageControl(intro, new Parameters(data), sutCtx);
         setMembers(sut, intro);
 
         data[8] = (byte) 0x00;
-        notInvalid = new CodePageControl(intro, new Parameters(data), new Context());
+        notInvalid = new CodePageControl(intro, new Parameters(data), new ContextImpl());
 
         data[8] = (byte) 0x40;
-        noPresentation = new CodePageControl(intro, new Parameters(data), new Context());
+        noPresentation = new CodePageControl(intro, new Parameters(data), new ContextImpl());
 
         data[8] = 0x60;
-        noIncrement = new CodePageControl(intro, new Parameters(data), new Context());
+        noIncrement = new CodePageControl(intro, new Parameters(data), new ContextImpl());
 
-        doubleByteCtx = new Context();
+        doubleByteCtx = new ContextImpl();
         data[9] = 0x0B;
         doubleByte = new CodePageControl(intro, new Parameters(data), doubleByteCtx);
 
-        singleByteUnicodeCtx = new Context();
+        singleByteUnicodeCtx = new ContextImpl();
         data[9] = (byte) 0xFE;
         singleByteUnicode = new CodePageControl(intro, new Parameters(data), singleByteUnicodeCtx);
 
-        doubleByteUnicodeCtx = new Context();
+        doubleByteUnicodeCtx = new ContextImpl();
         data[9] = (byte) 0xFF;
         doubleByteUnicode = new CodePageControl(intro, new Parameters(data), doubleByteUnicodeCtx);
 
         data[12] = (byte) 0x08;
-        enableVariableSpace = new CodePageControl(intro, new Parameters(data), new Context());
+        enableVariableSpace = new CodePageControl(intro, new Parameters(data), new ContextImpl());
     }
 
     @Test

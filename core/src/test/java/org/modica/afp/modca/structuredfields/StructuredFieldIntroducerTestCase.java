@@ -1,26 +1,40 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.structuredfields;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.modica.afp.modca.structuredfields.types.AttributeType;
+import org.modica.common.ByteUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.modica.afp.modca.structuredfields.SfType;
-import org.modica.afp.modca.structuredfields.SfTypeFactory;
-import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
-import org.modica.afp.modca.structuredfields.SfTypeFactory.Attribute;
-import org.modica.common.ByteUtils;
-
 public class StructuredFieldIntroducerTestCase {
     private StructuredFieldIntroducer sut;
-    private SfType sutType;
+    private StructuredFieldType sutType;
 
     @Before
     public void setUp() {
         byte[] typeId = ByteUtils.createByteArray(0xD3, 0xAE, 0x89);
-        sutType = SfTypeFactory.getValue(typeId);
+        sutType = StructuredFieldTypeFactory.getValue(typeId);
         sut = new StructuredFieldIntroducer(1L, 2, typeId, (byte) 3, 5);
     }
 
@@ -101,7 +115,7 @@ public class StructuredFieldIntroducerTestCase {
      * @return the introducer
      */
     public static StructuredFieldIntroducer createGenericIntroducer() {
-        return createGenericIntroducer(Attribute.MFC);
+        return createGenericIntroducer(AttributeType.MFC);
     }
 
     /**
@@ -110,7 +124,7 @@ public class StructuredFieldIntroducerTestCase {
      * @param type the SfType
      * @return the introducer
      */
-    public static StructuredFieldIntroducer createGenericIntroducer(SfType type) {
+    public static StructuredFieldIntroducer createGenericIntroducer(StructuredFieldType type) {
         byte[] bytes = ByteUtils.createByteArray(
                 0xD3,
                 type.getTypeCode().getValue() & 0xFF,

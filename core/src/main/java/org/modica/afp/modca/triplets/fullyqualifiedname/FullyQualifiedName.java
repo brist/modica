@@ -1,8 +1,24 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.triplets.fullyqualifiedname;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import org.modica.afp.modca.Parameters;
 import org.modica.afp.modca.triplets.Triplet;
@@ -58,21 +74,10 @@ public abstract class FullyQualifiedName extends Triplet {
         assert type != null;
         // the length field is included in the length of the triplet
         int dataLength = length - 4;
-        switch (format) {
-        case character_string:
-            return handleStringData(type, params, length, dataLength);
-        case oid:
-            ObjectId oid = new ObjectId(params, dataLength);
-            return new FQNOidData(length, oid, type);
-        case url:
-            String url = params.getString(dataLength);
-            return new FQNUrlData(length, new URL(url), type);
-        default:
-            throw new IllegalStateException("The Fully Qualified Name data type is unknown");
-        }
+        return format.createFQN(type, params, length, dataLength);
     }
 
-    private static FullyQualifiedName handleStringData(FQNType type, Parameters params,
+    static FullyQualifiedName handleStringData(FQNType type, Parameters params,
             int fqnLength, int stringLength) throws UnsupportedEncodingException {
         switch (type) {
         case begin_resource_object_ref:

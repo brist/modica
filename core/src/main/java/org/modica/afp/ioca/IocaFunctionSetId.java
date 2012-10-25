@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.ioca;
 
 import java.util.ArrayList;
@@ -19,24 +36,7 @@ public class IocaFunctionSetId implements SelfDefiningField {
         assert length == 0x02;
         byte category = params.getByte();
         assert category == 0x01;
-        fs = getFunctionSet(params.getByte());
-    }
-
-    private FunctionSet getFunctionSet(byte id) {
-        switch (id) {
-        case 0x0A:
-            return FunctionSet.FS_10;
-        case 0x0B:
-            return FunctionSet.FS_11;
-        case 0x28:
-            return FunctionSet.FS_40;
-        case 0x2A:
-            return FunctionSet.FS_42;
-        case 0x2D:
-            return FunctionSet.FS_45;
-        default:
-            throw new IllegalArgumentException(id + " is not a valid IOCA function set");
-        }
+        fs = FunctionSet.getValue(params.getByte());
     }
 
     @Override

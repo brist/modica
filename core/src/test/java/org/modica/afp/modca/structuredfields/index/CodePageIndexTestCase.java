@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.modica.afp.modca.structuredfields.index;
 
 import java.io.UnsupportedEncodingException;
@@ -9,14 +26,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.modica.afp.modca.Context;
 import org.modica.afp.modca.Context.ContextType;
+import org.modica.afp.modca.ContextImpl;
 import org.modica.afp.modca.Parameters;
 import org.modica.afp.modca.common.CPIRepeatingGroupLength;
 import org.modica.afp.modca.common.GraphicalCharacterUseFlags;
-import org.modica.afp.modca.structuredfields.SfTypeFactory.Index;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducer;
 import org.modica.afp.modca.structuredfields.StructuredFieldIntroducerTestCase;
 import org.modica.afp.modca.structuredfields.StructuredFieldTestCase;
 import org.modica.afp.modca.structuredfields.index.CodePageIndex.CPI;
+import org.modica.afp.modca.structuredfields.types.IndexType;
 import org.modica.common.ByteUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -35,11 +53,10 @@ public class CodePageIndexTestCase extends StructuredFieldTestCase<CodePageIndex
 
     @Before
     public void setUp() throws UnsupportedEncodingException {
-        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(Index.CPI);
+        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(IndexType.CPI);
 
-        Context context = new Context();
-        context.put(ContextType.FOCA_CPI_REPEATING_GROUP_LENGTH,
-                CPIRepeatingGroupLength.SINGLE_BYTE);
+        Context context = new ContextImpl();
+        context.put(ContextType.FOCA_CPI_REPEATING_GROUP_LENGTH, CPIRepeatingGroupLength.SINGLE_BYTE);
         sut = createSingleByteCPI(CPIRepeatingGroupLength.SINGLE_BYTE);
         doubleByteUnicodeSut = createDoubleByteCPI(CPIRepeatingGroupLength.DOUBLE_BYTE_INC_UNICODE);
 
@@ -48,7 +65,7 @@ public class CodePageIndexTestCase extends StructuredFieldTestCase<CodePageIndex
 
     private CodePageIndex createSingleByteCPI(CPIRepeatingGroupLength cpiRLen)
             throws UnsupportedEncodingException {
-        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(Index.CPI);
+        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(IndexType.CPI);
         ByteBuffer bb = ByteBuffer.allocate(30);
         bb.put(char1Name.getBytes("Cp500"));
         bb.put(ByteUtils.createByteArray(1, 4));
@@ -56,14 +73,14 @@ public class CodePageIndexTestCase extends StructuredFieldTestCase<CodePageIndex
         bb.put(ByteUtils.createByteArray(2, 5));
         bb.put(char3Name.getBytes("Cp500"));
         bb.put(ByteUtils.createByteArray(4, 6));
-        Context context = new Context();
+        Context context = new ContextImpl();
         context.put(ContextType.FOCA_CPI_REPEATING_GROUP_LENGTH, cpiRLen);
         return new CodePageIndex(intro, new Parameters(bb.array()), context);
     }
 
     private CodePageIndex createDoubleByteCPI(CPIRepeatingGroupLength cpiRLen)
             throws UnsupportedEncodingException {
-        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(Index.CPI);
+        StructuredFieldIntroducer intro = StructuredFieldIntroducerTestCase.createGenericIntroducer(IndexType.CPI);
         ByteBuffer bb = ByteBuffer.allocate(42);
         bb.put(char1Name.getBytes("Cp500"));
         bb.put(ByteUtils.createByteArray(1, 2, 3, 1, 5));
@@ -71,7 +88,7 @@ public class CodePageIndexTestCase extends StructuredFieldTestCase<CodePageIndex
         bb.put(ByteUtils.createByteArray(2, 3, 4, 2, 6, 7));
         bb.put(char3Name.getBytes("Cp500"));
         bb.put(ByteUtils.createByteArray(4, 1, 2, 3, 1, 2, 3));
-        Context context = new Context();
+        Context context = new ContextImpl();
         context.put(ContextType.FOCA_CPI_REPEATING_GROUP_LENGTH, cpiRLen);
         return new CodePageIndex(intro, new Parameters(bb.array()), context);
     }
