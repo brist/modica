@@ -20,10 +20,12 @@ package org.modica.afp.modca.triplets;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.modica.afp.modca.Context;
 import org.modica.afp.modca.Parameters;
+import org.modica.common.ByteUtils;
 
 /**
  * A handler for parsing Structured Field Triplets and Triplet groups.
@@ -47,10 +49,15 @@ public final class TripletHandler {
     private static List<Triplet> parseTriplet(Parameters params, int position, int length,
             Context context) throws MalformedURLException, UnsupportedEncodingException {
         List<Triplet> tripletList = new ArrayList<Triplet>();
+        byte[] temp = params.getByteArray(0, length);
         // The length field of the recurring group is included in the
         while (params.getPosition() < position + length) {
             int tripletLength = (int) params.getUInt(1);
             TripletIdentifiers tId = TripletIdentifiers.getTripletId(params.getByte());
+            if (tId == null) {
+            	throw new IllegalStateException("Unknown triplet found at position: " + (params.getPosition() - 1)
+            			+ ". Array of triplets found so far: " + Arrays.deepToString(tripletList.toArray()) + ". data=" + ByteUtils.bytesToHex(temp));
+            }
             tripletList.add(tId.buildTriplet(tripletLength, params, context));
         }
         return tripletList;

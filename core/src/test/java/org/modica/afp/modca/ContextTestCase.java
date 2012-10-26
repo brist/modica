@@ -82,6 +82,7 @@ public class ContextTestCase {
         // here we set the actual codepage name and CodePageDescriptor
         sut.setCurrentCodePageName(cpName);
         sut.setCpgidForCodePage(cpDesc);
+        sut.endCodePage();
 
         assertEquals(sut.getPTXEncoding(), cpgid);
     }
@@ -89,17 +90,6 @@ public class ContextTestCase {
     @Test(expected = IllegalStateException.class)
     public void setCpgidWithoutCodePageNameFailureCase() {
         sut.setCpgidForCodePage(cpDesc);
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void setNullCodePageFailureCase() {
-        sut.setCurrentCodePageName("The following statement should throw an exception");
-        sut.setCurrentCodePageName("Stop! Hammer time!");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testEndCodePage() {
         sut.endCodePage();
-        sut.setCpgidForCodePage(cpDesc);
     }
 }

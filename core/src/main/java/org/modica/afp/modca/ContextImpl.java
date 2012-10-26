@@ -17,6 +17,7 @@ public class ContextImpl implements Context {
     private final Map<ContextType, Object> contextObjs = new EnumMap<ContextType, Object>(ContextType.class);
     private final Map<String, CodePageDescriptor> codePages = new HashMap<String, CodePageDescriptor>();
     private String currentCodePageName;
+    private CodePageDescriptor currentCodePageDescriptor;
 
     public ContextImpl() {
         contextObjs.put(ContextType.MODCA_GCSGID, EbcdicStringHandler.DEFAULT_CPGID);
@@ -34,26 +35,33 @@ public class ContextImpl implements Context {
 
     @Override
     public void setCurrentCodePageName(String name) {
-        if (currentCodePageName != null) {
-            throw new IllegalStateException("Trying to start a push the code page:" + name
-                    + " into the context stack while " + currentCodePageName + " hasn't been finished");
+        if (currentCodePageName == null) {
+        	currentCodePageName = name;
         }
-        currentCodePageName = name;
     }
 
     @Override
     public void setCpgidForCodePage(CodePageDescriptor descriptor) {
-        if (currentCodePageName == null) {
-            throw new IllegalStateException("There is no code page name set for this CodePageDescriptor");
+        if (currentCodePageDescriptor != null) {
+        	throw new IllegalStateException("Trying to start a push for the CodePageDescriptor: " + descriptor
+        			+ " into the context stack while " + currentCodePageDescriptor + " hasn't been finished");
         }
-        codePages.put(currentCodePageName, descriptor);
-        // reset the current code page so that we can make state checks
-        currentCodePageName = null;
+        currentCodePageDescriptor = descriptor;
     }
 
     @Override
     public void endCodePage() {
+    	if (currentCodePageName == null && currentCodePageDescriptor != null) {
+    		throw new IllegalStateException("There is no code page name set for this CodePageDescriptor");
+    	}
+    	if (currentCodePageName != null && currentCodePageDescriptor == null) {
+    		throw new IllegalStateException("There is no CodePageDescriptor for " + currentCodePageName);
+    	}
+    	if (currentCodePageName != null && currentCodePageDescriptor != null) {
+    		codePages.put(currentCodePageName, currentCodePageDescriptor);
+    	}
         currentCodePageName = null;
+        currentCodePageDescriptor = null;
     }
 
     @Override

@@ -67,6 +67,7 @@ public class CodePageControl extends AbstractStructuredField {
             defaultUnicodeValue = 0;
         }
 
+        context.setCurrentCodePageName(defCharId);
         context.put(ContextType.FOCA_CPI_REPEATING_GROUP_LENGTH, cpRgLen);
     }
 

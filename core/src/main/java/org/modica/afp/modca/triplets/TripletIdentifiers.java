@@ -429,7 +429,7 @@ public enum TripletIdentifiers {
     }
 
     static TripletIdentifiers getTripletId(byte tId) {
-        return CACHE.get(tId);
+		return CACHE.get(tId);
     }
 
     abstract Triplet buildTriplet(int length, Parameters params, Context context)

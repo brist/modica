@@ -36,8 +36,7 @@ public class AttributeValue extends Triplet {
         this.length = tripletLength;
         this.tId = tId;
         // Two reserved bytes
-        assert params.getByte() == (byte) 0x00;
-        assert params.getByte() == (byte) 0x00;
+        params.skip(2);
         attributeValue = params.getString(length - 4);
     }
 
@@ -87,5 +86,10 @@ public class AttributeValue extends Triplet {
         result = result * 31 + attributeValue.hashCode();
         return result;
     }
+
+	@Override
+	public String toString() {
+		return tId.getName() + "=" + attributeValue;
+	}
 
 }
