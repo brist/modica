@@ -36,7 +36,9 @@ public class AttributeValue extends Triplet {
         this.length = tripletLength;
         this.tId = tId;
         // Two reserved bytes
-        params.skip(2);
+        byte[] reserved = params.getByteArray(2);
+        assert reserved[0] == (byte) 0x00;
+        assert reserved[1] == (byte) 0x00;
         attributeValue = params.getString(length - 4);
     }
 
