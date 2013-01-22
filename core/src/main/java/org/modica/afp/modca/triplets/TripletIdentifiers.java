@@ -64,6 +64,12 @@ public enum TripletIdentifiers {
             return new NotYetImplementedTriplet(length, this, params);
         }
     },
+    text_orientation(0x1d) {
+    	@Override
+    	Triplet buildTriplet(int length, Parameters params, Context context) {
+    		return new NotYetImplementedTriplet(length, this, params);
+    	}
+    },
     font_descriptor_specification(0x1f) {
         @Override
         Triplet buildTriplet(int length, Parameters params, Context context) {
