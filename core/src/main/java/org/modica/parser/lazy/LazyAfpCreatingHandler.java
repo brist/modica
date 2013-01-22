@@ -69,9 +69,9 @@ public class LazyAfpCreatingHandler implements StructuredFieldIntroducerHandler 
         executor.shutdown();
     }
 
-    private LazyStructuredField createLazyStructuredField(StructuredFieldIntroducer introducer,
+    private StructuredField createLazyStructuredField(StructuredFieldIntroducer introducer,
             Callable<Context> contextResolver) {
-        final LazyStructuredField lazyStructuredField = new LazyStructuredField(introducer,
+    	final StructuredField lazyStructuredField = StructuredFieldProxyFactory.getProxy(introducer, 
                 executor.submit(contextResolver), fileChannelProvider);
         lazyStructuredFields.add(lazyStructuredField);
         return lazyStructuredField;
@@ -79,7 +79,7 @@ public class LazyAfpCreatingHandler implements StructuredFieldIntroducerHandler 
 
     @Override
     public void handleBegin(final StructuredFieldIntroducer introducer) {
-        LazyStructuredField structuredField = createLazyStructuredField(introducer,
+        StructuredField structuredField = createLazyStructuredField(introducer,
                 new Callable<Context>() {
             @Override
             public Context call() throws Exception {
@@ -92,7 +92,7 @@ public class LazyAfpCreatingHandler implements StructuredFieldIntroducerHandler 
 
     @Override
     public void handleEnd(final StructuredFieldIntroducer introducer) {
-        LazyStructuredField structuredField = createLazyStructuredField(introducer,
+        StructuredField structuredField = createLazyStructuredField(introducer,
                 new Callable<Context>() {
             @Override
             public Context call() throws Exception {
